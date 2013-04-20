@@ -105,6 +105,46 @@ DynoMemory.prototype.query = function(query, callback) {
     callback(null, items);
 };
 
+// scan(field, value, callback) -> (err, items)
+// scan(fn, callback) -> (err, items)
+//
+// scan('admin', true, callback);
+// scan('favColour', 'red', callback);
+//
+// This scans through all the items in the DB and returns any that fulfil the criteria.
+DynoMemory.prototype.scan = function(field, value, callback) {
+    var self = this;
+
+    var fn;
+    if ( !callback && typeof field === 'function' ) {
+        fn = field;
+        callback = value;
+        field = null
+        value = null;
+    }
+
+    // get all the keys in this store
+    var keys = Object.keys(self.store).sort();
+
+    // save the items which match the input query
+    var items = [];
+    keys.forEach(function(key, i) {
+        // we have an item, so flatten it first
+        var item = self.reduce(self.store[key]);
+
+        // only push this item if it fulfils the criteria
+        if ( field && item.value[field] === value ) {
+            items.push(item);
+        }
+        if ( fn && fn(item) ) {
+            items.push(item);
+        }
+    });
+
+    // return all the items we found
+    callback(null, items);
+};
+
 // ----------------------------------------------------------------------------
 
 // the createDynoMemory() function
