@@ -78,6 +78,35 @@ DynoAbstract.prototype._getChangesets = function(itemName, callback) {
 
 // ----------------------------------------------------------------------------
 
+// query(query) -> (err, items)
+//
+// query({ start : 'james', end : 'john' }, callback);
+//
+// This returns all the items between 'start' and 'end'.
+DynoMemory.prototype.query = function(query, callback) {
+    var self = this;
+
+    // get all the keys in this store
+    var keys = Object.keys(self.store).sort();
+
+    // save the items which match the input query
+    var items = [];
+    keys.forEach(function(key, i) {
+        // ignore this key if it is outside the range we want
+        if ( query.start && key < query.start ) return;
+        if ( query.end   && key > query.end   ) return;
+
+        // ok, looks like we have an item
+        var item = self.reduce(self.store[key]);
+        items.push(item);
+    });
+
+    // return all the items we found
+    callback(null, items);
+};
+
+// ----------------------------------------------------------------------------
+
 // the createDynoMemory() function
 module.exports = exports = function createDynoMemory(filename) {
     return new DynoMemory(filename);
