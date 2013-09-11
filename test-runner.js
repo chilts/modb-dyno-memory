@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------------
 //
-// test-runner.js - run all the dyno-abstract tests
+// test-runner.js - run all the modb-dyno-abstract tests
 //
 // Copyright (c) 2013 Andrew Chilton
 //
@@ -9,14 +9,14 @@
 //
 // ----------------------------------------------------------------------------
 
-var dyno = require('./dyno-memory.js');
+var dyno = require('./modb-dyno-memory.js');
 
 function newDyno() {
     return dyno();
 };
 
 // ok, pass this function to the tests
-var tests = require('dyno-abstract/tests.js');
+var tests = require('modb-dyno-abstract/tests.js');
 tests(newDyno);
 
 // ----------------------------------------------------------------------------

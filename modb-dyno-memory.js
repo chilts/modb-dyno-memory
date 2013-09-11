@@ -3,7 +3,7 @@
 var crypto = require('crypto');
 var util = require('util');
 
-var DynoAbstract = require('dyno-abstract');
+var DynoAbstract = require('modb-dyno-abstract');
 
 // ----------------------------------------------------------------------------
 
